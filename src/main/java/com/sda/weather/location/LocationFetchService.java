@@ -10,7 +10,7 @@ public class LocationFetchService {
 
     private final LocationRepository locationRepository;
 
-    public Location fechLocation(String id) {
+    public Location fechLocation(Long id) {
         return locationRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new NotFoundException("Not found location: " + id));
     }

@@ -20,7 +20,7 @@ public class LocationController {
     final LocationFetchService locationFetchService;
 
     @GetMapping("/location/{id}")
-    LocationDto getLocation(@PathVariable String id) {
+    LocationDto getLocation(@PathVariable Long id) {
 
         Location location = locationFetchService.fechLocation(id);
         return locationMapper.mapToLocationDto(location);
