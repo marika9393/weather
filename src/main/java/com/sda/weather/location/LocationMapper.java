@@ -1,5 +1,8 @@
 package com.sda.weather.location;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class LocationMapper {
      LocationDto mapToLocationDto(Location newLocation) {
         LocationDto locationDto = new LocationDto();
