@@ -17,4 +17,5 @@ public class LocationDto {
     private Double latitude;
     private String region;
     private String countryName;
+
 }
