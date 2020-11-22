@@ -4,14 +4,20 @@ import com.sda.weather.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class LocationFetchService {
 
     private final LocationRepository locationRepository;
 
-    public Location fetchLocation(Long id) {
+    public Location fetchLocationById(Long id) {
         return locationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found location: " + id));
+    }
+
+    public List<Location> fetchAllLocation() {
+        return locationRepository.findAll();
     }
 }

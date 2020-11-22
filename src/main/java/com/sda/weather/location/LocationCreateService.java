@@ -4,27 +4,39 @@ import com.sda.weather.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class LocationCreateService {
 
     final LocationRepository locationRepository;
 
-     public Location createLocation(String cityName, String countryName, String region, String longitude, String latitude) {
-         if (cityName.isEmpty() || countryName.isEmpty()) {
-             throw new BadRequestException("City or Country can't be empty");
-         }
-         if (region.isEmpty()) {
-             throw new BadRequestException("Region can't be empty");
-         }
+    public Location createLocation(LocationDefinition locationDefinition) {
 
-         Location location = new Location();
-         location.setCityName(cityName);
-         location.setCountryName(countryName);
-         location.setRegion(region);
-         location.setLongitude(longitude);
-         location.setLatitude(latitude);
+        String cityName = locationDefinition.getCityName();
+        String countryName = locationDefinition.getCountryName();
+        Double longitude = locationDefinition.getLongitude();
+        Double latitude = locationDefinition.getLatitude();
 
-         return locationRepository.save(location);
+
+        if (cityName.isEmpty() || countryName.isEmpty() || cityName.isBlank() || countryName.isBlank()) {
+            throw new BadRequestException("City or Country can't be empty");
+        }
+
+        if (longitude < -180 || longitude > 180 || latitude < -90 || latitude > 90) {
+            throw new BadRequestException("Incorrect geographical coordinates.");
+        }
+
+
+        Location location = Location.builder()
+                .cityName(cityName)
+                .countryName(countryName)
+                .longitude(longitude)
+                .latitude(latitude)
+                .region(locationDefinition.getRegion())
+                .build();
+
+        return locationRepository.save(location);
     }
 }

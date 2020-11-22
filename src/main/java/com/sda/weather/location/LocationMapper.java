@@ -6,14 +6,27 @@ import org.springframework.stereotype.Component;
 public class LocationMapper {
 
     LocationDto mapToLocationDto(Location newLocation) {
-        // todo include the id filed
-        LocationDto locationDto = new LocationDto();
-        locationDto.setCityName(newLocation.getCityName());
-        locationDto.setCountryName(newLocation.getCountryName());
-        locationDto.setLongitude(newLocation.getLongitude());
-        locationDto.setLatitude(newLocation.getLatitude());
-        locationDto.setRegion(newLocation.getRegion());
-        // todo use a builder
+        LocationDto locationDto = LocationDto.builder()
+                .id(newLocation.getId())
+                .cityName(newLocation.getCityName())
+                .countryName(newLocation.getCountryName())
+                .latitude(newLocation.getLatitude())
+                .longitude(newLocation.getLongitude())
+                .region(newLocation.getRegion())
+                .build();
+
         return locationDto;
+    }
+
+    LocationDefinition mapToLocationDefinition(LocationDto locationDto) {
+        LocationDefinition locationDefinition = LocationDefinition.builder()
+                .cityName(locationDto.getCityName())
+                .countryName(locationDto.getCountryName())
+                .latitude(locationDto.getLatitude())
+                .longitude(locationDto.getLongitude())
+                .region(locationDto.getRegion())
+                .build();
+
+        return locationDefinition;
     }
 }

@@ -6,15 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class LocationDto {
-    // todo add an id field
-    private Long id;
+public class LocationDefinition {
+
     private String cityName;
     private Double longitude;
     private Double latitude;
     private String region;
     private String countryName;
+
+
 }
