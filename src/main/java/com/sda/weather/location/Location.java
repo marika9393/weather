@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Optional;
 
 @Entity
 @Data
@@ -28,4 +29,8 @@ public class Location {
     private String region;
     // can't be null
     private String countryName;
+
+    public Optional<String> getRegion() {
+        return Optional.of(region);
+    }
 }

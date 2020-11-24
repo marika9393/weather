@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LocationDto {
-    // todo add an id field
+
     private Long id;
     private String cityName;
     private Double longitude;

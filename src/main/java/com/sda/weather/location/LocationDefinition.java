@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,6 +18,7 @@ public class LocationDefinition {
     private Double latitude;
     private String region;
     private String countryName;
+
 
 
 }

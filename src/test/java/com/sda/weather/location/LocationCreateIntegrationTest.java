@@ -1,5 +1,6 @@
 package com.sda.weather.location;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 
 @SpringBootTest
@@ -30,11 +32,105 @@ public class LocationCreateIntegrationTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void createNewLocation_createNewLocationAndReturn200StatusCode() throws Exception {
+    void fetchNewLocation_createNewLocationAndReturn201StatusCode() throws Exception {
 
         //given
         locationRepository.deleteAll();
-        LocationDto locationDto = new LocationDto(null, "Gdansk", 18.65, 54.35, "pomorskie", "Polska");
+
+        Location location = Location.builder()
+                .id(null)
+                .countryName("Polska")
+                .cityName("Gdansk")
+                .longitude(18.65)
+                .latitude(54.35)
+                .region("Pomorskie")
+                .build();
+
+
+        Location location2 = Location.builder()
+                .id(null)
+                .countryName("Polska")
+                .cityName("Zakopane")
+                .longitude(19.57)
+                .latitude(49.18)
+                .region("Malopolskie")
+                .build();
+
+
+        locationRepository.save(location);
+        locationRepository.save(location2);
+
+        MockHttpServletRequestBuilder builder = get("/location")
+                .contentType(MediaType.APPLICATION_JSON);
+
+
+        //when
+        MvcResult result = mockMvc.perform(builder).andReturn();
+
+        //then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        String responseBody = response.getContentAsString();
+        List<LocationDto> locations = objectMapper.readValue(responseBody, new TypeReference<>() {});
+        assertThat(locations).hasSize(2);
+        assertThat(locations).anySatisfy(singleLocation -> {
+                assertThat(singleLocation.getCityName()).isEqualTo("Gdansk");
+                assertThat(singleLocation.getCountryName()).isEqualTo("Polska");
+    });
+        assertThat(locations).anySatisfy(singleLocation -> {
+            assertThat(singleLocation.getCityName()).isEqualTo("Zakopane");
+            assertThat(singleLocation.getRegion()).isEqualTo("Malopolskie");
+        });
+}
+
+
+    @Test
+    void fetchNewLocation_whenRegionIsEmpty_createNewLocationAndReturn201StatusCode() throws Exception {
+
+        //given
+        locationRepository.deleteAll();
+
+        Location location = Location.builder()
+                .id(null)
+                .countryName("Polska")
+                .cityName("Gdansk")
+                .longitude(18.65)
+                .latitude(54.35)
+                .region("")
+                .build();
+
+
+        locationRepository.save(location);
+
+        MockHttpServletRequestBuilder builder = get("/location")
+                .contentType(MediaType.APPLICATION_JSON);
+
+
+        //when
+        MvcResult result = mockMvc.perform(builder).andReturn();
+
+        //then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+
+        String responseBody = response.getContentAsString();
+        List<LocationDto> locations = objectMapper.readValue(responseBody, new TypeReference<>() {});
+        assertThat(locations).hasSize(1);
+        assertThat(locations).anySatisfy(singleLocation -> {
+            assertThat(singleLocation.getCityName()).isEqualTo("Gdansk");
+            assertThat(singleLocation.getRegion()).isEqualTo("");
+        });
+    }
+
+    @Test
+    void createNewLocation_whenCountryIsEmpty_returnHttpStatus400Code() throws Exception {
+
+        //given
+        locationRepository.deleteAll();
+
+        LocationDto locationDto = new LocationDto(null, "Gdansk", 18.65, 54.35, "pomorskie", "");
+
         String requestBody = objectMapper.writeValueAsString(locationDto);
         MockHttpServletRequestBuilder post = post("/location")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,19 +141,82 @@ public class LocationCreateIntegrationTest {
 
         //then
         MockHttpServletResponse response = result.getResponse();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        LocationDto location = objectMapper.readValue(response.getContentAsString(), LocationDto.class);
-        assertThat(location.getId()).isNotNull();
-        assertThat(location.getCityName()).isEqualTo("Gdansk");
-
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        List<Location> locations = locationRepository.findAll();
+        assertThat(locations).isEmpty();
     }
 
+
     @Test
-    void createNewLocation_whnCountryIsEmpty_returnHttpStatus400Code() throws Exception {
+    void createNewLocation_whenCityIsEmpty_returnHttpStatus400Code() throws Exception {
 
         //given
         locationRepository.deleteAll();
-        LocationDto locationDto = new LocationDto(null, "Gdansk", 18.65, 54.35, "pomorskie", "");
+
+        LocationDto locationDto = new LocationDto(null,
+                "",
+                18.65,
+                54.35,
+                "pomorskie",
+                "Polska");
+
+        String requestBody = objectMapper.writeValueAsString(locationDto);
+        MockHttpServletRequestBuilder post = post("/location")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody);
+
+        //when
+        MvcResult result = mockMvc.perform(post).andReturn();
+
+        //then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        List<Location> locations = locationRepository.findAll();
+        assertThat(locations).isEmpty();
+    }
+
+
+    @Test
+    void createNewLocation_whenLatitudeIsInvalid_returnHttpStatus400Code() throws Exception {
+
+        //given
+        locationRepository.deleteAll();
+
+        LocationDto locationDto = new LocationDto(null,
+                "Gdańsk",
+                18.65,
+                200.0,
+                "pomorskie",
+                "Polska");
+
+        String requestBody = objectMapper.writeValueAsString(locationDto);
+        MockHttpServletRequestBuilder post = post("/location")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody);
+
+        //when
+        MvcResult result = mockMvc.perform(post).andReturn();
+
+        //then
+        MockHttpServletResponse response = result.getResponse();
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        List<Location> locations = locationRepository.findAll();
+        assertThat(locations).isEmpty();
+    }
+
+    @Test
+    void createNewLocation_whenLongitudeIsInvalid_returnHttpStatus400Code() throws Exception {
+
+        //given
+        locationRepository.deleteAll();
+
+        LocationDto locationDto = new LocationDto(null,
+                "Gdańsk",
+                100.0,
+                170.0,
+                "pomorskie",
+                "Polska");
+
         String requestBody = objectMapper.writeValueAsString(locationDto);
         MockHttpServletRequestBuilder post = post("/location")
                 .contentType(MediaType.APPLICATION_JSON)

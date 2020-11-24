@@ -12,7 +12,7 @@ public class LocationMapper {
                 .countryName(newLocation.getCountryName())
                 .latitude(newLocation.getLatitude())
                 .longitude(newLocation.getLongitude())
-                .region(newLocation.getRegion())
+                .region(newLocation.getRegion().orElse(null))
                 .build();
 
         return locationDto;
