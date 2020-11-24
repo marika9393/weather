@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LocationCreateIntegrationTest {
+class LocationCreateIntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -32,8 +32,7 @@ public class LocationCreateIntegrationTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void fetchNewLocation_createNewLocationAndReturn201StatusCode() throws Exception {
-
+    void fetchNewLocation_createNewLocationAndReturn201StatusCode() throws Exception {  // todo move to eg. LocationFetchIntegrationTest
         //given
         locationRepository.deleteAll();
 
@@ -72,22 +71,28 @@ public class LocationCreateIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 
         String responseBody = response.getContentAsString();
-        List<LocationDto> locations = objectMapper.readValue(responseBody, new TypeReference<>() {});
+        List<LocationDto> locations = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
         assertThat(locations).hasSize(2);
         assertThat(locations).anySatisfy(singleLocation -> {
-                assertThat(singleLocation.getCityName()).isEqualTo("Gdansk");
-                assertThat(singleLocation.getCountryName()).isEqualTo("Polska");
-    });
+            assertThat(singleLocation.getCityName()).isEqualTo("Gdansk");
+            assertThat(singleLocation.getCountryName()).isEqualTo("Polska");
+            assertThat(singleLocation.getLongitude()).isEqualTo(18.65);
+            assertThat(singleLocation.getLatitude()).isEqualTo(54.35);
+            assertThat(singleLocation.getRegion()).isEqualTo("Pomorskie");
+        });
         assertThat(locations).anySatisfy(singleLocation -> {
             assertThat(singleLocation.getCityName()).isEqualTo("Zakopane");
             assertThat(singleLocation.getRegion()).isEqualTo("Malopolskie");
+            assertThat(singleLocation.getLongitude()).isEqualTo(19.57);
+            assertThat(singleLocation.getLatitude()).isEqualTo(49.18);
+            assertThat(singleLocation.getRegion()).isEqualTo("Malopolskie");
         });
-}
+    }
 
 
     @Test
-    void fetchNewLocation_whenRegionIsEmpty_createNewLocationAndReturn201StatusCode() throws Exception {
-
+    void fetchNewLocation_whenRegionIsEmpty_createNewLocationAndReturn201StatusCode() throws Exception { // todo move to eg. LocationFetchIntegrationTest
         //given
         locationRepository.deleteAll();
 
@@ -115,17 +120,20 @@ public class LocationCreateIntegrationTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
 
         String responseBody = response.getContentAsString();
-        List<LocationDto> locations = objectMapper.readValue(responseBody, new TypeReference<>() {});
+        List<LocationDto> locations = objectMapper.readValue(responseBody, new TypeReference<>() {
+        });
         assertThat(locations).hasSize(1);
         assertThat(locations).anySatisfy(singleLocation -> {
             assertThat(singleLocation.getCityName()).isEqualTo("Gdansk");
             assertThat(singleLocation.getRegion()).isEqualTo("");
+            // todo more assertions
         });
     }
 
+    // todo add a new test for the happy-path eg. createNewLocation_savesNewLocationAndReturnHttpStatus200Code
+
     @Test
     void createNewLocation_whenCountryIsEmpty_returnHttpStatus400Code() throws Exception {
-
         //given
         locationRepository.deleteAll();
 
@@ -149,7 +157,6 @@ public class LocationCreateIntegrationTest {
 
     @Test
     void createNewLocation_whenCityIsEmpty_returnHttpStatus400Code() throws Exception {
-
         //given
         locationRepository.deleteAll();
 
@@ -178,7 +185,6 @@ public class LocationCreateIntegrationTest {
 
     @Test
     void createNewLocation_whenLatitudeIsInvalid_returnHttpStatus400Code() throws Exception {
-
         //given
         locationRepository.deleteAll();
 
@@ -206,7 +212,6 @@ public class LocationCreateIntegrationTest {
 
     @Test
     void createNewLocation_whenLongitudeIsInvalid_returnHttpStatus400Code() throws Exception {
-
         //given
         locationRepository.deleteAll();
 

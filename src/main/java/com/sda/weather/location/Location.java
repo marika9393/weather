@@ -16,18 +16,15 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Location {
+class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    // can't be null
     private String cityName;
     private Double longitude;
     private Double latitude;
     private String region;
-    // can't be null
     private String countryName;
 
     public Optional<String> getRegion() {

@@ -8,16 +8,16 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class LocationFetchService {
+class LocationFetchService {
 
     private final LocationRepository locationRepository;
 
-    public Location fetchLocationById(Long id) {
+    Location fetchLocationById(Long id) {
         return locationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Not found location: " + id));
     }
 
-    public List<Location> fetchAllLocation() {
+    List<Location> fetchAllLocation() {
         return locationRepository.findAll();
     }
 }

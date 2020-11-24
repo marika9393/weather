@@ -8,17 +8,15 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class LocationCreateService {
+class LocationCreateService {
 
     final LocationRepository locationRepository;
 
-    public Location createLocation(LocationDefinition locationDefinition) {
-
+    Location createLocation(LocationDefinition locationDefinition) {
         String cityName = locationDefinition.getCityName();
         String countryName = locationDefinition.getCountryName();
         Double longitude = locationDefinition.getLongitude();
         Double latitude = locationDefinition.getLatitude();
-
 
         if (cityName.isEmpty() || countryName.isEmpty() || cityName.isBlank() || countryName.isBlank()) {
             throw new BadRequestException("City or Country can't be empty");
@@ -28,13 +26,12 @@ public class LocationCreateService {
             throw new BadRequestException("Incorrect geographical coordinates.");
         }
 
-
         Location location = Location.builder()
                 .cityName(cityName)
                 .countryName(countryName)
                 .longitude(longitude)
                 .latitude(latitude)
-                .region(locationDefinition.getRegion())
+                .region(locationDefinition.getRegion())     // todo we don't want white characters to be written in the database eg. region = "   " - let's filter that
                 .build();
 
         return locationRepository.save(location);

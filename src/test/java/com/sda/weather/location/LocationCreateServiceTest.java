@@ -20,10 +20,8 @@ class LocationCreateServiceTest {
     @InjectMocks
     LocationCreateService locationCreateService;
 
-
     @Test
     void createLocation_callsLocationRepository() {
-
         //given
         when(locationRepository.save(any(Location.class))).thenReturn(new Location());
         LocationDefinition location = LocationDefinition.builder()
@@ -44,7 +42,6 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenCityIsEmpty_throwsException() {
-
         //given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName("")
@@ -65,7 +62,6 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenCityIsBlank_throwsException() {
-
         //given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName(" ")
@@ -107,7 +103,6 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenCountryIsBlank_throwsException() {
-
         //given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName("Gdańsk")
@@ -128,7 +123,7 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenLongitudeIsOver180() {
-
+        // given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName("Zakopane")
                 .countryName("Polska")
@@ -147,7 +142,7 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenLongitudeIsBelow180Negative() {
-
+        // given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName("Zakopane")
                 .countryName("Polska")
@@ -166,7 +161,7 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenLatitudeIsOver90() {
-
+        // given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName("Zakopane")
                 .countryName("Polska")
@@ -185,7 +180,7 @@ class LocationCreateServiceTest {
 
     @Test
     void createLocation_whenLatitudeIsBelow90Negative() {
-
+        // given
         LocationDefinition location = LocationDefinition.builder()
                 .cityName("Zakopane")
                 .countryName("Polska")
@@ -201,6 +196,4 @@ class LocationCreateServiceTest {
         assertThat(result).isInstanceOf(BadRequestException.class);
         verify(locationRepository, times(0)).save(any(Location.class));
     }
-
-
 }

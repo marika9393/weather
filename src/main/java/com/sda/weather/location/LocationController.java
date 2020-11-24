@@ -12,22 +12,19 @@ import java.util.List;
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-public class LocationController {
+class LocationController {
 
     final LocationCreateService locationCreateService;
     final LocationMapper locationMapper;
     final LocationFetchService locationFetchService;
 
-    // todo add new endpoint GET: /location
     @GetMapping("/location")
-    ResponseEntity<List<Location>> getAllLocation() {
-        List<Location> all = locationFetchService.fetchAllLocation();
+    ResponseEntity<List<Location>> getAllLocation() {       // todo ResponseEntity<...> is unnecessary, simple List<Location> is enough
+        List<Location> locations = locationFetchService.fetchAllLocation();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(all);
-
+                .body(locations);
     }
-
 
     @GetMapping("/location/{id}")
     LocationDto getLocationById(@PathVariable Long id) {
@@ -37,15 +34,11 @@ public class LocationController {
 
     @PostMapping("/location")
     ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
-
         LocationDefinition locationDefinition = locationMapper.mapToLocationDefinition(locationDto);
         Location newLocation = locationCreateService.createLocation(locationDefinition);
         log.info("create new location: " + newLocation);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(locationMapper.mapToLocationDto(newLocation));
     }
-
-
 }
