@@ -31,8 +31,12 @@ class LocationCreateService {
                 .countryName(countryName)
                 .longitude(longitude)
                 .latitude(latitude)
-                .region(locationDefinition.getRegion())     // todo we don't want white characters to be written in the database eg. region = "   " - let's filter that
                 .build();
+
+        String region = locationDefinition.getRegion();
+        Optional.ofNullable(region)
+                .filter(r -> !r.isBlank())
+                .ifPresent(location::setRegion);
 
         return locationRepository.save(location);
     }

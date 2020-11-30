@@ -19,11 +19,8 @@ class LocationController {
     final LocationFetchService locationFetchService;
 
     @GetMapping("/location")
-    ResponseEntity<List<Location>> getAllLocation() {       // todo ResponseEntity<...> is unnecessary, simple List<Location> is enough
-        List<Location> locations = locationFetchService.fetchAllLocation();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(locations);
+    List<Location> getAllLocation() {
+        return locationFetchService.fetchAllLocation();
     }
 
     @GetMapping("/location/{id}")
