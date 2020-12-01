@@ -126,7 +126,7 @@ class LocationFetchIntegrationTest {
         assertThat(locations).anySatisfy(singleLocation -> {
             assertThat(singleLocation.getCityName()).isEqualTo("Gdansk");
             assertThat(singleLocation.getRegion()).isEqualTo("");
-            // todo more assertions
+
         });
     }
 
