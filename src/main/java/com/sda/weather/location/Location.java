@@ -16,7 +16,7 @@ import java.util.Optional;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class Location {
+public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
