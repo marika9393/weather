@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 class WeatherServiceIntegrationTest {
 
-
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -34,6 +33,9 @@ class WeatherServiceIntegrationTest {
         locationRepository.deleteAll();
         Location location = new Location();
         location.setCityName("Warsaw");
+        location.setCountryName("Poland");
+        location.setLatitude(50.0);
+        location.setLongitude(40.0);
         savedLocation = locationRepository.save(location);
     }
 
@@ -68,6 +70,5 @@ class WeatherServiceIntegrationTest {
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
-
 
 }

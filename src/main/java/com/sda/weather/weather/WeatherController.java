@@ -1,8 +1,6 @@
 package com.sda.weather.weather;
 
-import com.sda.weather.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,6 @@ import javax.validation.constraints.Min;
 
 @RestController
 @RequiredArgsConstructor
-@Log4j2
 @Validated
 public class WeatherController {
 
