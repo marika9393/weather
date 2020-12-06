@@ -14,7 +14,7 @@ public class WeatherDto {
 
     Long id;
     String temperature;
-    String presure;
+    String pressure;
     String humidity;
     String windSpeed;
     String windDirection;
