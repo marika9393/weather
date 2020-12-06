@@ -44,7 +44,7 @@ class WeatherServiceIntegrationTest {
         //given
         Long id = savedLocation.getId();
 
-        MockHttpServletRequestBuilder request = get("/location/" + id + "/com/sda/weather/weather") // todo use correct url
+        MockHttpServletRequestBuilder request = get("/location/" + id + "/weather")
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
@@ -58,7 +58,7 @@ class WeatherServiceIntegrationTest {
     void getWeather_whenPeriodIsOver5_returns400StatusCode() throws Exception {
         //given
         Long id = savedLocation.getId();
-        MockHttpServletRequestBuilder request = get("/location/" + id + "/com/sda/weather/weather") // todo use correct url
+        MockHttpServletRequestBuilder request = get("/location/" + id + "/weather?period=6")
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when

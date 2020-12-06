@@ -1,6 +1,8 @@
 package com.sda.weather.weather;
 
-// todo add @Component
+import org.springframework.stereotype.Component;
+
+@Component
 public class WeatherMapper {
 
     WeatherDto mapToWeatherDto(Weather newWeather) {
