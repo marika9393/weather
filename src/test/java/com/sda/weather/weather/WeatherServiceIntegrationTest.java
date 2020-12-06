@@ -42,15 +42,13 @@ class WeatherServiceIntegrationTest {
     @Test
     void getWeather_returnsCorrectWeatherAnd200statusCode() throws Exception {
         //given
-
         Long id = savedLocation.getId();
 
-        MockHttpServletRequestBuilder request = get("/location/" + id + "/com/sda/weather/weather")
+        MockHttpServletRequestBuilder request = get("/location/" + id + "/com/sda/weather/weather") // todo use correct url
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-
 
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
@@ -58,10 +56,9 @@ class WeatherServiceIntegrationTest {
 
     @Test
     void getWeather_whenPeriodIsOver5_returns400StatusCode() throws Exception {
-
         //given
         Long id = savedLocation.getId();
-        MockHttpServletRequestBuilder request = get("/location/" + id + "/com/sda/weather/weather")
+        MockHttpServletRequestBuilder request = get("/location/" + id + "/com/sda/weather/weather") // todo use correct url
                 .contentType(MediaType.APPLICATION_JSON);
 
         //when
@@ -70,5 +67,4 @@ class WeatherServiceIntegrationTest {
         //then
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
-
 }

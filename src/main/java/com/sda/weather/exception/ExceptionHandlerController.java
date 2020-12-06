@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Slf4j
 public class ExceptionHandlerController {
 
+    // todo handle ConstraintViolationException -> 400 (bad request)
+
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     void badRequestHandler(BadRequestException exception) {

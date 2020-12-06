@@ -16,19 +16,16 @@ import javax.validation.constraints.Min;
 @Validated
 public class WeatherController {
 
-
-     final WeatherService weatherCreateService;
-     final WeatherMapper weatherMapper;
-
+    final WeatherService weatherCreateService;
+    final WeatherMapper weatherMapper;
 
     @GetMapping("/location/{id}/weather")
-    WeatherDto getWeather(@PathVariable Long id, @RequestParam(required = false,defaultValue = "1") @Min(1) @Max(5)Integer period) {
-
-
-        Weather weather = weatherCreateService.getWeather(id, period);;
+    WeatherDto getWeather(@PathVariable Long id, @RequestParam(required = false, defaultValue = "1") @Min(1) @Max(5) Integer period) {
+        Weather weather = weatherCreateService.getWeather(id, period);
         return weatherMapper.mapToWeatherDto(weather);
     }
 
+    // todo remove unnecessary code
 //    @GetMapping("/weather")
 //    String getWeather(@RequestParam String cityName, @RequestParam(required = false) String date) {
 //        weatherCreateService.getWeatherByCityName(cityName, date);

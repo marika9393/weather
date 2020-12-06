@@ -19,7 +19,7 @@ class LocationController {
     final LocationFetchService locationFetchService;
 
     @GetMapping("/location")
-    List<Location> getAllLocation() {
+    List<Location> getAllLocation() {   // todo returns List<LocationDto>
         return locationFetchService.fetchAllLocation();
     }
 

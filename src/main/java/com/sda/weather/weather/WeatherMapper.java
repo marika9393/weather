@@ -1,5 +1,6 @@
 package com.sda.weather.weather;
 
+// todo add @Component
 public class WeatherMapper {
 
     WeatherDto mapToWeatherDto(Weather newWeather) {
