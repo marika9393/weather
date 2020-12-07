@@ -10,7 +10,6 @@ import java.util.List;
 public class WeatherOpenWeatherResponse {
 
     private String cod;
-    private int cnt;
     private CityResponse city;
     private List<SingleWeather> list;;
 

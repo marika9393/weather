@@ -40,6 +40,14 @@ public class WeatherService {
 
         try {
             WeatherOpenWeatherResponse weather = objectMapper.readValue(response, WeatherOpenWeatherResponse.class);
+            System.out.println(weather.getCod());
+            System.out.println(weather.getCity().getName());
+            System.out.println(weather.getList().get(1).getDate());
+//            System.out.println(weather.getList().get(1).getWind().getWindSpeed());
+//            System.out.println(weather.getList().get(1).getWind().getWindDirection());
+//            System.out.println(weather.getList().get(1).getMain().getPressure());
+//            System.out.println(weather.getList().get(1).getMain().getHumidity());
+//            System.out.println(weather.getList().get(1).getMain().getTemperature());
 
 
         } catch (JsonProcessingException e) {

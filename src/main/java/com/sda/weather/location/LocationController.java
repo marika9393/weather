@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Log4j2
@@ -19,8 +20,11 @@ class LocationController {
     final LocationFetchService locationFetchService;
 
     @GetMapping("/location")
-    List<Location> getAllLocation() {   // todo returns List<LocationDto>
-        return locationFetchService.fetchAllLocation();
+    List<LocationDto> getAllLocation() {
+        return locationFetchService.fetchAllLocation()
+                .stream()
+                .map(locationMapper::mapToLocationDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/location/{id}")
