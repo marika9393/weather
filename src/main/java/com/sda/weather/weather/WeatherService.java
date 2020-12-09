@@ -12,16 +12,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
-public class WeatherService {
+class WeatherService {
 
     private final LocationFetchService locationFetchService;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public Weather getWeather(Long id, Integer period) {
-
+    Weather getWeather(Long id, Integer period) {
         Location location = locationFetchService.fetchLocationById(id);
         String cityName = location.getCityName();
 
@@ -33,23 +34,21 @@ public class WeatherService {
                 .build()
                 .toUriString();
 
-
         ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
         String response = entity.getBody();
 
-
         try {
             WeatherOpenWeatherResponse weather = objectMapper.readValue(response, WeatherOpenWeatherResponse.class);
-            System.out.println(weather.getCod());
-            System.out.println(weather.getCity().getName());
-            System.out.println(weather.getList().get(1).getDate());
-//            System.out.println(weather.getList().get(1).getWind().getWindSpeed());
-//            System.out.println(weather.getList().get(1).getWind().getWindDirection());
-//            System.out.println(weather.getList().get(1).getMain().getPressure());
-//            System.out.println(weather.getList().get(1).getMain().getHumidity());
-//            System.out.println(weather.getList().get(1).getMain().getTemperature());
 
+            List<WeatherOpenWeatherResponse.SingleWeather> singleWeathers = weather.getList(); // todo here we have a list of the weather forecast (40 entries for 5 days)
+            // todo we have to choose 1 forecast for the selected day out of 40 possible
+            // todo for each day there are 8 weather forecasts (every 3 hours), let's assume we want for 12:00
+            // todo I propose to use stream and filter -> singleWeathers.stream().filter(...).findFirst().orElseThrow(...);  - use period
 
+            // todo then we have to convert SingleWeather to Weather
+            // todo then we have to set a Location for the Weather (relation one location - many Weathers)
+            // todo then we have to save the Weather to the database
+            // todo then we have to return saved Weather
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

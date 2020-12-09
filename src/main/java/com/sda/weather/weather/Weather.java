@@ -11,13 +11,13 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class Weather {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
-     String temperature;
-     String pressure;
-     String humidity;
-     String windSpeed;
-     String windDirection;
-
+    private Long id;
+    private String temperature;
+    private String pressure;
+    private String humidity;
+    private String windSpeed;
+    private String windDirection;
 }

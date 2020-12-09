@@ -3,7 +3,7 @@ package com.sda.weather.weather;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WeatherMapper {
+class WeatherMapper {
 
     WeatherDto mapToWeatherDto(Weather newWeather) {
         return WeatherDto.builder()

@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
 @RestController
 @RequiredArgsConstructor
 @Validated
-public class WeatherController {
+class WeatherController {
 
     final WeatherService weatherCreateService;
     final WeatherMapper weatherMapper;
@@ -31,5 +31,4 @@ public class WeatherController {
 //        weatherCreateService.getWeatherByCityName(cityName, date);
 //        return null;
 //    }
-
 }

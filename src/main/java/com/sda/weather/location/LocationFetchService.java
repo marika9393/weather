@@ -1,7 +1,6 @@
 package com.sda.weather.location;
 
 import com.sda.weather.exception.NotFoundException;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

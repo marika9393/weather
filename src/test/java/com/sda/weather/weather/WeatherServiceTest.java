@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -20,18 +21,16 @@ public class WeatherServiceTest {
 
     @Mock
     LocationFetchService locationFetchService;
-
     @InjectMocks
     WeatherService weatherService;
-
     @Spy
+    @Autowired
     ObjectMapper objectMapper;
     @Spy
     RestTemplate restTemplate;
 
     @Test
-    void getWeather_returnCorrectWeather() {
-
+    void getWeather_returnCorrectWeather() {    // todo remove this test for the moment, we are using the integration test because we have a lot of dependencies now
         //given
         Location location = new Location();
         location.setCityName("Warsaw");

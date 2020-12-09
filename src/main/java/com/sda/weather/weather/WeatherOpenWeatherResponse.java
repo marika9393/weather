@@ -9,8 +9,8 @@ import java.util.List;
 @Data
 public class WeatherOpenWeatherResponse {
 
-    private String cod;
-    private CityResponse city;
+    private String cod; // todo this is unnecessary
+    private CityResponse city;  // todo this is unnecessary
     private List<SingleWeather> list;;
 
     @Data
