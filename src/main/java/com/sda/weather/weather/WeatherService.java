@@ -3,8 +3,10 @@ package com.sda.weather.weather;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sda.weather.exception.NotFoundException;
 import com.sda.weather.location.Location;
 import com.sda.weather.location.LocationFetchService;
+import com.sda.weather.weather.client.WeatherServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,49 +14,30 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.Instant;
+import java.time.LocalDate;
+
 @Component
 @RequiredArgsConstructor
-public class WeatherService {
+class WeatherService {
 
     private final LocationFetchService locationFetchService;
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final WeatherServiceClient weatherServiceClient;
+    private final WeatherRepository weatherRepository;
 
-    public Weather getWeather(Long id, Integer period) {
+     Weather getWeather(Long id, Integer period) {
 
         Location location = locationFetchService.fetchLocationById(id);
         String cityName = location.getCityName();
+        LocalDate weatherDate = LocalDate.now().plusDays(period);
 
-        String url = UriComponentsBuilder.newInstance()
-                .scheme("http")
-                .host("api.openweathermap.org/data/2.5/forecast")
-                .queryParam("q", cityName)
-                .queryParam("appid", "bc55be57a274617383c51d005b4b3486")
-                .build()
-                .toUriString();
+        Weather weather = weatherServiceClient.getWeather(cityName,weatherDate)
+                .isElseThrow(() -> new NotFoundException("The weather forecast for " + cityName + " cannot be determineted for " + weatherDate ));
 
+        weather.setWeatherDate(Instant.now());
+        weather.setLocation(location);
 
-        ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
-        String response = entity.getBody();
-
-
-        try {
-            WeatherOpenWeatherResponse weather = objectMapper.readValue(response, WeatherOpenWeatherResponse.class);
-            System.out.println(weather.getCod());
-            System.out.println(weather.getCity().getName());
-            System.out.println(weather.getList().get(1).getDate());
-//            System.out.println(weather.getList().get(1).getWind().getWindSpeed());
-//            System.out.println(weather.getList().get(1).getWind().getWindDirection());
-//            System.out.println(weather.getList().get(1).getMain().getPressure());
-//            System.out.println(weather.getList().get(1).getMain().getHumidity());
-//            System.out.println(weather.getList().get(1).getMain().getTemperature());
-
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return new Weather();
+        return weatherRepository.save(weather);
     }
 
 }

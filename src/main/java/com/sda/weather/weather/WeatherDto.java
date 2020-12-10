@@ -19,6 +19,4 @@ class WeatherDto {
     private int windSpeed;
     private int windDirection;
     private String date;
-
-
 }

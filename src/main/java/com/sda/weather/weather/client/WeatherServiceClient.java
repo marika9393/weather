@@ -24,7 +24,7 @@ import java.util.Optional;
 public class WeatherServiceClient {
 
     private final RestTemplate restTemplate;
-    private final  ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
     private final WeatherClientProperties weatherClientProperties;
 
     public Optional<Weather> getWeather(String cityName, LocalDate weatherDate) {
@@ -39,25 +39,26 @@ public class WeatherServiceClient {
                 .toUriString();
 
         try {
-            ResponseEntity<String> response = restTemplate.getForEntity(url,String.class);
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
             String body = response.getBody();
 
-            if(response.getStatusCode().isError()) {
-                log.error("Connection error with url: " + url +", returned status code: " + response.getStatusCode().value());
+            if (response.getStatusCode().isError()) {
+                log.error("Connection error with url: " + url + ", returned status code: " + response.getStatusCode().value());
                 return Optional.empty();
             }
+
             WeatherOpenResponse weatherResponse = objectMapper.readValue(body, WeatherOpenResponse.class);
             LocalDateTime predictionDate = weatherDate.atTime(12, 00);
             return weatherResponse.getSingleWeatherList()
                     .stream()
-                    .filter(f-> mapToLocalDateTime(f.getDate()).isEqual(predictionDate))
+                    .filter(f -> mapToLocalDateTime(f.getDate()).isEqual(predictionDate))
                     .map(this::mapToForecast)
                     .findFirst();
-        } catch (JsonProcessingException e ) {
+        } catch (JsonProcessingException e) {
             log.error("Weather forecast information cannot be deserialized", e);
             return Optional.empty();
         } catch (RestClientException e) {
-            log.error("Connection error with url" + url,e);
+            log.error("Connection error with url" + url, e);
             return Optional.empty();
         }
 

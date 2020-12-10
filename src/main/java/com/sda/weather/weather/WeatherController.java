@@ -1,6 +1,5 @@
 package com.sda.weather.weather;
 
-import com.sda.weather.weather.client.WeatherServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +18,7 @@ import java.time.LocalDate;
 @Validated
 class WeatherController {
 
-    final WeatherForecastService weatherCreateService;
+    final WeatherMapper.WeatherForecastService weatherCreateService;
     final WeatherMapper weatherMapper;
 
     @GetMapping("/location/{id}/weather")

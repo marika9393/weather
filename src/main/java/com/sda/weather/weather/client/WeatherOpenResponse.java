@@ -2,7 +2,9 @@ package com.sda.weather.weather.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
 import java.util.List;
+
 @Data
 public class WeatherOpenResponse {
 
@@ -10,7 +12,7 @@ public class WeatherOpenResponse {
     private List<SingleWeather> singleWeatherList;
 
     @Data
-    static  class SingleWeather {
+    static class SingleWeather {
         @JsonProperty("dt_txt")
         private String date;
         private Main main;
