@@ -32,7 +32,7 @@ class WeatherService {
         LocalDate weatherDate = LocalDate.now().plusDays(period);
 
         Weather weather = weatherServiceClient.getWeather(cityName,weatherDate)
-                .isElseThrow(() -> new NotFoundException("The weather forecast for " + cityName + " cannot be determineted for " + weatherDate ));
+                .orElseThrow(() -> new NotFoundException("The weather forecast for " + cityName + " cannot be determineted for " + weatherDate ));
 
         weather.setWeatherDate(Instant.now());
         weather.setLocation(location);
