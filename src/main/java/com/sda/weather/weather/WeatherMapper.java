@@ -5,10 +5,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class WeatherMapper {
+class WeatherMapper {
 
     WeatherDto mapToWeatherDto(Weather newWeather) {
         return WeatherDto.builder()
+                .id(newWeather.getId())
                 .temperature(newWeather.getTemperature())
                 .pressure(newWeather.getPressure())
                 .humidity(newWeather.getHumidity())

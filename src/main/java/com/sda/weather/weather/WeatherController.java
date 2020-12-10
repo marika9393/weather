@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @RestController
 @RequiredArgsConstructor
 @Validated
-public class WeatherController {
+class WeatherController {
 
     final WeatherForecastService weatherCreateService;
     final WeatherMapper weatherMapper;

@@ -12,8 +12,6 @@ import javax.validation.ConstraintViolationException;
 @Slf4j
 public class ExceptionHandlerController {
 
-
-
     @ExceptionHandler({BadRequestException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     void badRequestHandler(RuntimeException exception) {
@@ -24,6 +22,4 @@ public class ExceptionHandlerController {
     void notFoundExceptionHandler(NotFoundException exception) {
         log.error(exception.getMessage());
     }
-
-
 }

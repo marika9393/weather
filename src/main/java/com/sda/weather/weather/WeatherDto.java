@@ -10,16 +10,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WeatherDto {
+class WeatherDto {
 
-    Long id;
-    float temperature;
-    int pressure;
-    int humidity;
-    int windSpeed;
-    int windDirection;
-    String date;
-
+    private Long id;
+    private float temperature;
+    private int pressure;
+    private int humidity;
+    private int windSpeed;
+    private int windDirection;
+    private String date;
 
 
 }
