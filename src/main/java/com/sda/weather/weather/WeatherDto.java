@@ -13,11 +13,12 @@ import lombok.NoArgsConstructor;
 public class WeatherDto {
 
     Long id;
-    String temperature;
-    String pressure;
-    String humidity;
-    String windSpeed;
-    String windDirection;
+    float temperature;
+    int pressure;
+    int humidity;
+    int windSpeed;
+    int windDirection;
+    String date;
 
 
 

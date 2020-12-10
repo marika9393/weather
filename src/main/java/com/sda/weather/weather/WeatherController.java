@@ -1,6 +1,8 @@
 package com.sda.weather.weather;
 
+import com.sda.weather.weather.client.WeatherServiceClient;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.time.LocalDate;
 
 
 @RestController
@@ -16,7 +19,7 @@ import javax.validation.constraints.Min;
 @Validated
 public class WeatherController {
 
-    final WeatherService weatherCreateService;
+    final WeatherForecastService weatherCreateService;
     final WeatherMapper weatherMapper;
 
     @GetMapping("/location/{id}/weather")
@@ -25,11 +28,11 @@ public class WeatherController {
         return weatherMapper.mapToWeatherDto(weather);
     }
 
-    // todo remove unnecessary code
-//    @GetMapping("/weather")
-//    String getWeather(@RequestParam String cityName, @RequestParam(required = false) String date) {
-//        weatherCreateService.getWeatherByCityName(cityName, date);
-//        return null;
-//    }
+
+    @GetMapping("/weather")
+    String getWeather(@RequestParam String cityName, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+
+        return null;
+    }
 
 }

@@ -2,6 +2,7 @@ package com.sda.weather.weather;
 
 import com.sda.weather.location.Location;
 import com.sda.weather.location.LocationRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ class WeatherServiceIntegrationTest {
     MockMvc mockMvc;
     @Autowired
     LocationRepository locationRepository;
+    @Autowired
+    WeatherRepository weatherRepository;
 
     Location savedLocation;
 
@@ -37,6 +40,12 @@ class WeatherServiceIntegrationTest {
         location.setLatitude(50.0);
         location.setLongitude(40.0);
         savedLocation = locationRepository.save(location);
+    }
+
+    @AfterEach
+    void tearDown() {
+        weatherRepository.deleteAll();
+        locationRepository.deleteAll();
     }
 
     @Test
