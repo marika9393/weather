@@ -19,10 +19,14 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String cityName;
+    @Column(nullable = false)
     private Double longitude;
+    @Column(nullable = false)
     private Double latitude;
     private String region;
+    @Column(nullable = false)
     private String countryName;
 
 
