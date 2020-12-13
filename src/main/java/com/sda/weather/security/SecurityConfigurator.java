@@ -21,13 +21,13 @@ public class SecurityConfigurator extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
 //                .antMatchers(HttpMethod.GET, "/location").permitAll()
-//                .antMatchers(HttpMethod.POST, "/location").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers(HttpMethod.POST, "/location").hasAnyAuthority("ROLE_ADMIN") <-> .hasRole("ADMIN)
                 .anyRequest().permitAll()
 //                .authenticated()
                 .and()
-                .formLogin()
+                .formLogin()        // POST: /login
                 .and()
-                .logout()
+                .logout()           // POST: /logout
                 .and()
                 .csrf().disable()
                 .httpBasic()
