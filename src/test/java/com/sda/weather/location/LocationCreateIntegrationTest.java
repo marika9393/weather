@@ -9,12 +9,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -42,6 +44,7 @@ class LocationCreateIntegrationTest {
                 "pomorskie",
                 "Polska");
         MockHttpServletRequestBuilder post = post("/location")
+                .with(user("marika").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(locationDto));
 
@@ -66,6 +69,7 @@ class LocationCreateIntegrationTest {
 
         String requestBody = objectMapper.writeValueAsString(locationDto);
         MockHttpServletRequestBuilder post = post("/location")
+                .with(user("marika").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
@@ -94,6 +98,7 @@ class LocationCreateIntegrationTest {
 
         String requestBody = objectMapper.writeValueAsString(locationDto);
         MockHttpServletRequestBuilder post = post("/location")
+                .with(user("marika").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
@@ -122,6 +127,7 @@ class LocationCreateIntegrationTest {
 
         String requestBody = objectMapper.writeValueAsString(locationDto);
         MockHttpServletRequestBuilder post = post("/location")
+                .with(user("marika").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
@@ -149,6 +155,7 @@ class LocationCreateIntegrationTest {
 
         String requestBody = objectMapper.writeValueAsString(locationDto);
         MockHttpServletRequestBuilder post = post("/location")
+                .with(user("marika").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody);
 
