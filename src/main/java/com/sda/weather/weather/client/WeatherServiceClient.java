@@ -48,7 +48,7 @@ public class WeatherServiceClient {
             }
 
             WeatherOpenResponse weatherResponse = objectMapper.readValue(body, WeatherOpenResponse.class);
-            LocalDateTime predictionDate = weatherDate.atTime(12, 00);
+            LocalDateTime predictionDate = weatherDate.atTime(12, 0);
             return weatherResponse.getSingleWeatherList()
                     .stream()
                     .filter(f -> mapToLocalDateTime(f.getDate()).isEqual(predictionDate))

@@ -15,11 +15,22 @@ public class ExceptionHandlerController {
     @ExceptionHandler({BadRequestException.class, ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     void badRequestHandler(RuntimeException exception) {
+
         log.error(exception.getMessage());
     }
+
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     void notFoundExceptionHandler(NotFoundException exception) {
+
+        log.error(exception.getMessage());
+    }
+
+        @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    void runtimeException(RuntimeException exception){
+
         log.error(exception.getMessage());
     }
 }
