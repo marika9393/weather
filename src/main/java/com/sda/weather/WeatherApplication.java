@@ -24,18 +24,20 @@ public class WeatherApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (userRepository.findAll().size() == 0) {
-            User marika= new User();
-            marika.setUsername("marika");
-            marika.setPassword(passwordEncoder.encode("marika1"));
-            marika.setAuthorities(Collections.singletonList(() -> "ROLE_USER"));
-            userRepository.save(marika);
 
-            User admin = new User();
-            admin.setUsername("admin");
-            admin.setPassword(passwordEncoder.encode("admin1"));
-            admin.setAuthorities(Collections.singletonList(() -> "ROLE_ADMIN"));
-            userRepository.save(admin);
-        }
+        userRepository.deleteAll();
+
+        User marika = new User();
+        marika.setUsername("marika");
+        marika.setPassword(passwordEncoder.encode("marika1"));
+        marika.setAuthorities(Collections.singletonList(() -> "ROLE_USER"));
+        userRepository.save(marika);
+
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword(passwordEncoder.encode("admin1"));
+        admin.setAuthorities(Collections.singletonList(() -> "ROLE_ADMIN"));
+        userRepository.save(admin);
+
     }
 }
